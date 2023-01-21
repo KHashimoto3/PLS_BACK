@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-public class LoginController {
+public class UserController {
 	@RequestMapping(value="/api/login", method = {RequestMethod.POST})
 	public LoginOutput login(@RequestBody LoginInput lgi) {
 		LoginOutput lgo = new LoginOutput("OK!");
