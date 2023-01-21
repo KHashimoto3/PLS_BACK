@@ -15,6 +15,11 @@ public class UserController {
 	
 	@RequestMapping(value="/api/login", method = {RequestMethod.POST})
 	public LoginOutput login(@RequestBody LoginInput lgi) {
+		//該当するユーザが存在しない場合はNGを返す
+		if (!userRepository.existsByName(lgi.getName())) {
+			LoginOutput lgo = new LoginOutput("NG");
+			return lgo;
+		}
 		//該当するユーザの情報を取得
 		User user = userRepository.findByName(lgi.getName());
 		//パスワードが合っているかを判断
