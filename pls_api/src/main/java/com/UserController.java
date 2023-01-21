@@ -17,7 +17,13 @@ public class UserController {
 	public LoginOutput login(@RequestBody LoginInput lgi) {
 		//該当するユーザの情報を取得
 		User user = userRepository.findByName(lgi.getName());
-		LoginOutput lgo = new LoginOutput("OK!"+user.getName()+"を取得しました！");
-		return lgo;
+		//パスワードが合っているかを判断
+		if (lgi.getPass().equals(user.getHash_pass())) {
+			LoginOutput lgo = new LoginOutput("OK");
+			return lgo;
+		} else {
+			LoginOutput lgo = new LoginOutput("NG");
+			return lgo;
+		}
 	}
 }
