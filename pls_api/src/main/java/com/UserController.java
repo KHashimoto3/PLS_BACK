@@ -1,5 +1,9 @@
 package com;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,5 +34,20 @@ public class UserController {
 			LoginOutput lgo = new LoginOutput("NG");
 			return lgo;
 		}
+	}
+	
+	@RequestMapping(value="/api/addac", method = {RequestMethod.POST})
+	public AddAccountOutput addAccount(@RequestBody AddAccountInput aci) throws NoSuchAlgorithmException {
+		//パスワードをハッシュ化し、モデルを作成
+		String passRow = aci.getPass();
+		//SHA-256
+		MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+		byte[] sha256_result = sha256.digest(passRow.getBytes());
+		User usr = new User();
+		usr.setName(aci.getName());
+		usr.setHash_pass(String.format("%040x", new BigInteger(1, sha256_result)));
+		userRepository.save(usr);
+		AddAccountOutput aco = new AddAccountOutput("OK!");
+		return aco;
 	}
 }
