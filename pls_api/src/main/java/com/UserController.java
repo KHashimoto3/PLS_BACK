@@ -44,6 +44,11 @@ public class UserController {
 	
 	@RequestMapping(value="/api/addac", method = {RequestMethod.POST})
 	public AddAccountOutput addAccount(@RequestBody AddAccountInput aci) throws NoSuchAlgorithmException {
+		//すでに該当するユーザ名が登録されている場合はAlreadyを返す
+		if (userRepository.existsByName(aci.getName())) {
+			AddAccountOutput aco = new AddAccountOutput("Already");
+			return aco;
+		}
 		//パスワードをハッシュ化し、モデルを作成
 		String passRow = aci.getPass();
 		//SHA-256
