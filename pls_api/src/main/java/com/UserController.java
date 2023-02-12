@@ -18,7 +18,7 @@ public class UserController {
 	private UserRepository userRepository;
 	
 	@RequestMapping(value="/api/login", method = {RequestMethod.POST})
-	public LoginOutput login(@RequestBody LoginInput lgi) {
+	public LoginOutput login(@RequestBody LoginInput lgi) throws NoSuchAlgorithmException {
 		//該当するユーザが存在しない場合はNGを返す
 		if (!userRepository.existsByName(lgi.getName())) {
 			LoginOutput lgo = new LoginOutput("NG");
@@ -26,8 +26,14 @@ public class UserController {
 		}
 		//該当するユーザの情報を取得
 		User user = userRepository.findByName(lgi.getName());
+		//入力されたパスワードをハッシュ化
+		String passRow = lgi.getPass();
+		//SHA-256
+		MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+		byte[] sha256Result = sha256.digest(passRow.getBytes());
+		String hashPassInput=String.format("%040x", new BigInteger(1, sha256Result));
 		//パスワードが合っているかを判断
-		if (lgi.getPass().equals(user.getHash_pass())) {
+		if (hashPassInput.equals(user.getHash_pass())) {
 			LoginOutput lgo = new LoginOutput("OK");
 			return lgo;
 		} else {
