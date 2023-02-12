@@ -48,10 +48,10 @@ public class UserController {
 		String passRow = aci.getPass();
 		//SHA-256
 		MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-		byte[] sha256_result = sha256.digest(passRow.getBytes());
+		byte[] sha256Result = sha256.digest(passRow.getBytes());
 		User usr = new User();
 		usr.setName(aci.getName());
-		usr.setHash_pass(String.format("%040x", new BigInteger(1, sha256_result)));
+		usr.setHash_pass(String.format("%040x", new BigInteger(1, sha256Result)));
 		userRepository.save(usr);
 		AddAccountOutput aco = new AddAccountOutput("OK!");
 		return aco;
