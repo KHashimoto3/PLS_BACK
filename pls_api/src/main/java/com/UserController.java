@@ -42,7 +42,7 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping(value="/api/addac", method = {RequestMethod.POST})
+	@RequestMapping(value="/api/addAc", method = {RequestMethod.POST})
 	public AddAccountOutput addAccount(@RequestBody AddAccountInput aci) throws NoSuchAlgorithmException {
 		//すでに該当するユーザ名が登録されている場合はAlreadyを返す
 		if (userRepository.existsByName(aci.getName())) {

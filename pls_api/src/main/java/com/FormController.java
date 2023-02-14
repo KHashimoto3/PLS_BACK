@@ -13,8 +13,8 @@ public class FormController {
 	@Autowired
 	private FormRepository formRepository;
 	
-	@GetMapping(path="/api/getformlist")
-	public @ResponseBody Iterable<Form> getformlist() {
+	@GetMapping(path="/api/getFormList")
+	public @ResponseBody Iterable<Form> getFormList() {
 		return formRepository.findAll();
 	}
 }
